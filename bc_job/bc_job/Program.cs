@@ -7,10 +7,10 @@ Console.WriteLine("Do you want to pull the books repository? (y || yes / n || No
 var input = Console.ReadLine();
 
 string inp = string.IsNullOrEmpty(input) ? "" : input.ToLowerInvariant();
-string[] truthy = { "y", "ye", "yes" };
+string[] accepted = ["y", "ye", "yes"];
 
 // Answer accepted - continue work
-if (truthy.Contains(inp)) {
+if (accepted.Contains(inp)) {
     Console.WriteLine("Pulling books...");
     try {
         var response = await new ApiService().GetRequest("https://api.actionnetwork.com/web/v1/books");
