@@ -268,3 +268,4 @@ FakesAssemblies/
 
 # Ignore JetBrains ".idea" folder and files in it
 *.idea 
+bc_job/bc_job/result.txt
