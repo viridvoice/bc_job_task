@@ -1,44 +1,18 @@
-﻿using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using bc_job.Services;
-using bc_job.Models;
-
-bool Filter = false;
-bool Group = true;
+using bc_job.Services.Interfaces;
 
 
-// send request
-Console.WriteLine("Do you want to pull the books repository? (y || yes / n || No)");
-var input = Console.ReadLine();
+IHost _host = Host.CreateDefaultBuilder().ConfigureServices(services =>
+{
 
-string inp = string.IsNullOrEmpty(input) ? "" : input.ToLowerInvariant();
-string[] accepted = ["y", "ye", "yes"];
+    services.AddTransient<IApiService, ApiService>();
+    services.AddTransient<IDataFiltering, DataFiltering>();
+    
+    
+    services.AddSingleton<IBookManaging, BookManaging>();
+}).Build();
 
-// Answer accepted - continue work
-if (accepted.Contains(inp)) {
-    Console.WriteLine("Pulling books...");
-    try {
-        var response = await new ApiService().GetRequest("https://api.actionnetwork.com/web/v1/books");
-        var result = JsonSerializer.Deserialize<ApiResponse>(response);
-
-        
-        // filter books
-        if (result?.Books != null && Filter){
-            var filtered = await new DataFiltering().FilterBooksWithWhere(result.Books);
-            var filtered2 = await new DataFiltering().FilterBooksWithLoop(result.Books);
-        }
-        
-        // group books
-        if (Group && result?.Books != null)
-        {
-            var grouped = await new DataGrouping().GroupData(result.Books);
-        }
-    }
-    catch (Exception e) {
-        Console.WriteLine("An error occured:");
-        Console.WriteLine(e);
-        // no need to re-throw error - just exit program
-    }
-}
-
-// Answer unaccepted - exit 
-else { Console.WriteLine("Exiting program"); }
+var app = _host.Services.GetRequiredService<IBookManaging>();
+await app.Run();
