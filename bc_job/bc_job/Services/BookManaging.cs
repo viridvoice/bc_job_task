@@ -4,11 +4,12 @@ using bc_job.Services.Interfaces;
 
 namespace bc_job.Services;
 
-public class BookManaging(IApiService apiService, IDataFiltering dataFiltering, IDataGrouping dataGrouping) : IBookManaging
+public class BookManaging(IApiService apiService, IDataFiltering dataFiltering, IDataGrouping dataGrouping, IDataStoring dataStoring) : IBookManaging
 {
     private static readonly string Endpoint = "https://api.actionnetwork.com/web/v1/books";
     private static readonly bool Filter = true;
     private static readonly bool Group = true;
+    private static readonly bool StoreToFile = true;
     private static readonly string[] AcceptedAnswers = ["y", "ye", "yes"];
 
     public async Task Run() {
@@ -37,6 +38,11 @@ public class BookManaging(IApiService apiService, IDataFiltering dataFiltering, 
                 // group books
                 if (Group && result?.Books != null) {
                     var grouped = await dataGrouping.GroupData(result.Books);
+
+                    if (StoreToFile) {
+                        string stored = await dataStoring.StoreToFile(grouped) ? "Data stored to file" : "Data storing failed";
+                        Console.WriteLine(stored);
+                    }
                 }
             }
             catch (Exception e) {
