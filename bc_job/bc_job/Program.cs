@@ -2,7 +2,8 @@
 using bc_job.Services;
 using bc_job.Models;
 
-bool Filter = true;
+bool Filter = false;
+bool Group = true;
 
 
 // send request
@@ -24,6 +25,12 @@ if (accepted.Contains(inp)) {
         if (result?.Books != null && Filter){
             var filtered = await new DataFiltering().FilterBooksWithWhere(result.Books);
             var filtered2 = await new DataFiltering().FilterBooksWithLoop(result.Books);
+        }
+        
+        // group books
+        if (Group && result?.Books != null)
+        {
+            var grouped = await new DataGrouping().GroupData(result.Books);
         }
     }
     catch (Exception e) {
