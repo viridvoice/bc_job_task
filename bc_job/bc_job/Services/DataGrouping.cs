@@ -5,11 +5,16 @@ namespace bc_job.Services;
 
 public class DataGrouping : IDataGrouping
 {
-    public async Task<List<Book>> GroupData(List<Book> source)
+    public async Task<List<List<Book>>> GroupData(List<Book> source)
     {
-        var grouped = source.GroupBy(x => x.ParentName);
+        List<List<Book>> result = new List<List<Book>>();
+        var grouped = source.GroupBy(x => x.ParentName).OrderBy(x=>x.Key);
+        foreach (var group in grouped) {
+            result.Add(group.ToList());
+        }
+        
         
         await Task.CompletedTask;
-        return new List<Book>();
+        return result;
     }
 }

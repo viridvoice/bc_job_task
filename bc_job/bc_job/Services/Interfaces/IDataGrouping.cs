@@ -4,5 +4,5 @@ namespace bc_job.Services.Interfaces;
 
 public interface IDataGrouping
 {
-    Task<List<Book>> GroupData(List<Book> source);
+    Task<List<List<Book>>> GroupData(List<Book> source);
 }

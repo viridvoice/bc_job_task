@@ -4,10 +4,11 @@ using bc_job.Services.Interfaces;
 
 namespace bc_job.Services;
 
-public class BookManaging(IApiService apiService, IDataFiltering dataFiltering) : IBookManaging
+public class BookManaging(IApiService apiService, IDataFiltering dataFiltering, IDataGrouping dataGrouping) : IBookManaging
 {
     private static readonly string Endpoint = "https://api.actionnetwork.com/web/v1/books";
     private static readonly bool Filter = true;
+    private static readonly bool Group = true;
     private static readonly string[] AcceptedAnswers = ["y", "ye", "yes"];
 
     public async Task Run() {
@@ -31,6 +32,11 @@ public class BookManaging(IApiService apiService, IDataFiltering dataFiltering) 
                 if (result?.Books != null && Filter) {
                     var filtered = await dataFiltering.FilterBooksWithWhere(result.Books);
                     var filtered2 = await dataFiltering.FilterBooksWithLoop(result.Books);
+                }
+
+                // group books
+                if (Group && result?.Books != null) {
+                    var grouped = await dataGrouping.GroupData(result.Books);
                 }
             }
             catch (Exception e) {
