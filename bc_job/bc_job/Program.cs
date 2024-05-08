@@ -16,6 +16,13 @@ if (truthy.Contains(inp)) {
         var response = await new ApiService().GetRequest("https://api.actionnetwork.com/web/v1/books");
         var result = JsonSerializer.Deserialize<ApiResponse>(response);
 
+        
+        // filter books
+        if (result?.Books != null){
+            var filtered = await new DataFiltering().FilterBooksWithWhere(result.Books);
+            var filtered2 = await new DataFiltering().FilterBooksWithLoop(result.Books);
+            
+        }
     }
     catch (Exception e) {
         Console.WriteLine("An error occured:");
