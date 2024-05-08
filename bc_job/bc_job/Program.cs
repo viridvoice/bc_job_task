@@ -10,6 +10,7 @@ IHost _host = Host.CreateDefaultBuilder().ConfigureServices(services =>
     services.AddTransient<IApiService, ApiService>();
     services.AddTransient<IDataFiltering, DataFiltering>();
     services.AddTransient<IDataGrouping, DataGrouping>();
+    services.AddTransient<IDataStoring, DataStoring>();
     
     
     services.AddSingleton<IBookManaging, BookManaging>();
