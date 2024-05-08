@@ -13,6 +13,8 @@ public class BookMeta
     [JsonPropertyName("states")] 
     public List<string> States { get; set; } = new();
 
+
+    [JsonPropertyName("website")]
     public string? Website { get; set; }
     
     [JsonPropertyName("is_legal")]
