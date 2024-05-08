@@ -2,6 +2,9 @@
 using bc_job.Services;
 using bc_job.Models;
 
+bool Filter = true;
+
+
 // send request
 Console.WriteLine("Do you want to pull the books repository? (y || yes / n || No)");
 var input = Console.ReadLine();
@@ -18,10 +21,9 @@ if (truthy.Contains(inp)) {
 
         
         // filter books
-        if (result?.Books != null){
+        if (result?.Books != null && Filter){
             var filtered = await new DataFiltering().FilterBooksWithWhere(result.Books);
             var filtered2 = await new DataFiltering().FilterBooksWithLoop(result.Books);
-            
         }
     }
     catch (Exception e) {
