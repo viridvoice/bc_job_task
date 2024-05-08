@@ -4,8 +4,13 @@ namespace bc_job.Models;
 
 public class BookMeta
 {
+    [JsonPropertyName("logos")]
     public Logos Logos { get; set; } = new();
+    
+    [JsonPropertyName("deeplink")]
     public DeepLink DeepLink { get; set; } = new();
+
+    [JsonPropertyName("states")] 
     public List<string> States { get; set; } = new();
 
     public string? Website { get; set; }
