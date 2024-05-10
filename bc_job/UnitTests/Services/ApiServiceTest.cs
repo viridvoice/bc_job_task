@@ -6,7 +6,7 @@ namespace UnitTests.Services
     public class ApiServiceTest
     {
         [TestMethod]
-        public void Test()
+        public void GetRequest_Test()
         {
         }
     }

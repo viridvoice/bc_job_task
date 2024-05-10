@@ -6,7 +6,7 @@ namespace UnitTests.Services
     public class DataGroupingTest
     {
         [TestMethod]
-        public void Test()
+        public void GroupData_Test()
         {
         }
     }

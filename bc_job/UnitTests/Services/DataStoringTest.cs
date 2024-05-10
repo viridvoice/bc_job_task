@@ -6,7 +6,7 @@ namespace UnitTests.Services
     public class DataStoringTest
     {
         [TestMethod]
-        public void Test()
+        public void StoreToFile_Test()
         {
         }
     }

@@ -6,7 +6,7 @@ namespace UnitTests.Services
     public class BookManagingTest
     {
         [TestMethod]
-        public void Test()
+        public void Run_Test()
         {
         }
     }

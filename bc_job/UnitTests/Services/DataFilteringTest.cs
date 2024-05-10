@@ -6,7 +6,12 @@ namespace UnitTests.Services
     public class DataFilteringTest
     {
         [TestMethod]
-        public void Test()
+        public void FilterBooksWithWhere_Test()
+        {
+        }
+        
+        [TestMethod]
+        public void FilterBooksWithLoop_Test()
         {
         }
     }
