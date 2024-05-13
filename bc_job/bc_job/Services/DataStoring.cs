@@ -16,7 +16,7 @@ public class DataStoring : IDataStoring
             }
         }
         
-        string? path = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.Parent?.FullName + "//result.txt";
+        string? path = Parameters.RootUrl + "//result.txt";
         if (File.Exists(path)) { File.Delete(path); }
 
         await using StreamWriter sw = File.CreateText(path);
