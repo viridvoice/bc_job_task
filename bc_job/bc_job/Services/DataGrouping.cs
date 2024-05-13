@@ -13,7 +13,6 @@ public class DataGrouping : IDataGrouping
             result.Add(group.ToList());
         }
         
-        
         await Task.CompletedTask;
         return result;
     }
