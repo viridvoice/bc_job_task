@@ -12,14 +12,12 @@ namespace UnitTests.Services
         [TestMethod]
         public void StoreToFile_Test()
         {
-            Task<bool> tmp = new DataStoring().StoreToFile(_data);
-            tmp.Wait();
-            bool result = tmp.Result;
+            Task<bool> file = new DataStoring().StoreToFile(_data);
+            file.Wait();
             
             // double validate if file has been created & remove it - just clear "junk"
-            if (File.Exists(Parameters.RootUrl + "//result.txt")) {
-                File.Delete(Parameters.RootUrl + "//result.txt");
-            }
+            string path = Parameters.RootUrl + "//result.txt";
+            if (File.Exists(path)) { File.Delete(path); }
         }
     }
 }
