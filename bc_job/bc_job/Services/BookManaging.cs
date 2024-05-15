@@ -30,9 +30,9 @@ public class BookManaging(IApiService apiService, IDataFiltering dataFiltering, 
         return status;
     }
 
-    private async Task<List<Book>> Filtering(List<Book>? source, int method = 1) {
-        List<Book> result = new List<Book>();
-        if (source != null && Parameters.Filter) {
+    private async Task<List<Book>?> Filtering(List<Book> source, int method = 1) {
+        List<Book>? result = null;
+        if (Parameters.Filter) {
             result = method == 1 ? 
                 await dataFiltering.FilterBooksWithWhere(source) : 
                 await dataFiltering.FilterBooksWithLoop(source);
@@ -41,26 +41,31 @@ public class BookManaging(IApiService apiService, IDataFiltering dataFiltering, 
     }
     
     public async Task Run() {
+        
+        // working only with console - returns "true" if program is to proceed
         if (!await StartProgram()) { return; }
         
         try {
             var response = await apiService.GetRequest(Parameters.FeedUrl);
-            var result = JsonSerializer.Deserialize<ApiResponse>(response);
-
-            // filter books
-            List<Book> filtered = await Filtering(result?.Books);
+            if (string.IsNullOrEmpty(response)) { return; }
+            ApiResponse result = JsonSerializer.Deserialize<ApiResponse>(response);
+            if (!result.Books.Any()) { return; }
             
+            // filter books
+            List<Book>? filtered = await Filtering(result.Books);
+            if (filtered == null) { return; }
 
             // group books
-            if (Parameters.Group && result?.Books != null) {
-                var grouped = await dataGrouping.GroupData(result.Books);
+            List<List<Book>>? grouped = null;
+            if (Parameters.Group) { grouped = await dataGrouping.GroupData(filtered);  }
+            if (grouped == null) { return; }
 
-                if (Parameters.StoreToFile) {
-                    string stored = await dataStoring.StoreToFile(grouped)
-                        ? "Data stored to file"
-                        : "Data storing failed";
-                    Console.WriteLine(stored);
-                }
+            // store grouped data to file
+            if (Parameters.StoreToFile) {
+                string stored = await dataStoring.StoreToFile(grouped)
+                    ? "Data stored to file"
+                    : "Data storing failed";
+                Console.WriteLine(stored);
             }
         }
         catch (Exception e) {
