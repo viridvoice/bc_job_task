@@ -4,7 +4,7 @@ using bc_job.Services;
 using bc_job.Services.Interfaces;
 
 
-IHost _host = Host.CreateDefaultBuilder().ConfigureServices(services =>
+IHost host = Host.CreateDefaultBuilder().ConfigureServices(services =>
 {
 
     services.AddTransient<IApiService, ApiService>();
@@ -16,5 +16,5 @@ IHost _host = Host.CreateDefaultBuilder().ConfigureServices(services =>
     services.AddSingleton<IBookManaging, BookManaging>();
 }).Build();
 
-var app = _host.Services.GetRequiredService<IBookManaging>();
+var app = host.Services.GetRequiredService<IBookManaging>();
 await app.Run();
